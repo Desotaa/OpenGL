@@ -42,7 +42,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
 int main()
 {
 	glfwInit();
-	//Specify the version and the OpenGL profile. We are usýng version 3.3
+	//Specify the version and the OpenGL profile. We are using version 3.3
 	//Note that these functions set features for the next call of glfwCreateWindow
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -91,7 +91,6 @@ int main()
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION::FAILED\n" << infoLog << std::endl;
 	}
-
 	//Create the fragment shader
 	unsigned int fragmentShader;
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -131,9 +130,16 @@ int main()
 	//Triangle vertices
 	float vertices[] =
 	{
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f, 0.5f, 0.0f
+		0.5f, 0.5f, 0.0f, //Top Right
+		0.5f, -0.5f, 0.0f, //Bottom Right
+		-0.5f, -0.5f, 0.0f, //Bottom left
+		-0.5f, 0.5f, 0.0f //Top Left
+	};
+
+	unsigned int indices[] =
+	{
+		0, 3, 1,
+		2, 1, 3
 	};
 
 	//Generate the VAO and Bind it
@@ -152,6 +158,14 @@ int main()
 
 	//Specify the data of the VBO.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//Generate the EBO. Note that A VAO stores the glBindBuffer calls when the target is GL_ELEMENT_ARRAY_BUFFER.
+	//Meaning that you can store EBO inside the currently bound VAO.
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 
 	//Specify the vertex attributes of the currently bound VBO
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -174,9 +188,11 @@ int main()
 
 		//Before rendering bind the shader program, and VAO.
 		glUseProgram(shaderProgram);
-		//Note that we dont need to bind VBO since VAO stores attribute pointer which points to the corresponding VBO's
+		//Note that we dont need to bind VBO since VAO stores attribute pointer which points to the corresponding VBO's data
+		//VAO also stores the EBO corresponding to the object to be drawn.
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 		//Before moving on to the next rendering iteration, swap the buffers, and poll the events.
 		glfwSwapBuffers(window);

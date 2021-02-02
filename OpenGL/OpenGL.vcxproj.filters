@@ -9,12 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Shaders">
-      <UniqueIdentifier>{3e5cb21d-df48-482e-ae23-f8305ca1ed93}</UniqueIdentifier>
+      <UniqueIdentifier>{07ab1d50-9c6a-4b17-9f7c-ccbb812d4916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\simp_triangle">
+      <UniqueIdentifier>{b23aeb07-d3a2-42ae-88f7-88ec4542fb22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,18 +23,24 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="awesomeface.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="container.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <None Include="Shaders\simp_triangle\fragment.frag">
+      <Filter>Shaders\simp_triangle</Filter>
+    </None>
+    <None Include="Shaders\simp_triangle\vertex.vert">
+      <Filter>Shaders\simp_triangle</Filter>
+    </None>
   </ItemGroup>
 </Project>

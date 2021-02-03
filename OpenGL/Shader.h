@@ -16,7 +16,7 @@ public:
 	Shader(const char* vertexPath, const char* fragmentPath);
 	// use/activate the shader
 	void use();
-	// utility uniform functions
+	// utility uniform functions. Note that to call these functions, first you have to activate the shader program
 	void setBool(const std::string &name, bool value) const;
 	void setInt(const std::string &name, int value) const;
 	void setFloat(const std::string &name, float value) const;

@@ -147,8 +147,15 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\Container\texfrag.frag" />
+    <None Include="Shaders\Container\texvertex.vert" />
     <None Include="Shaders\simp_triangle\fragment.frag" />
     <None Include="Shaders\simp_triangle\vertex.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\awesomeface.png" />
+    <Image Include="Resources\Textures\container.jpg" />
+    <Image Include="Resources\Textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

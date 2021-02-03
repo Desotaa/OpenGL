@@ -15,6 +15,15 @@
     <Filter Include="Shaders\simp_triangle">
       <UniqueIdentifier>{b23aeb07-d3a2-42ae-88f7-88ec4542fb22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{96b1967d-5988-4bfc-a894-c89f89b4ba70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{17673911-043d-4dce-9d0b-e596f7e83a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Container">
+      <UniqueIdentifier>{6f14361d-a7a8-4071-9394-379815552962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,5 +51,22 @@
     <None Include="Shaders\simp_triangle\vertex.vert">
       <Filter>Shaders\simp_triangle</Filter>
     </None>
+    <None Include="Shaders\Container\texfrag.frag">
+      <Filter>Shaders\Container</Filter>
+    </None>
+    <None Include="Shaders\Container\texvertex.vert">
+      <Filter>Shaders\Container</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\awesomeface.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\container.jpg">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\wall.jpg">
+      <Filter>Resources\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -2,6 +2,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Shader.h"
+#include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
+#include <glm/glm/gtc/type_ptr.hpp>
+
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -179,6 +183,19 @@ int main()
 	shader1.use();
 	shader1.setInt("texture1", 0);
 	shader1.setInt("texture2", 1);
+
+	//Transformation
+	glm::mat4 transformation = glm::mat4(1.0f);
+	//glm::rotate translate, and scale creates the corresponding matrix with required parameters and
+	//POST MULTIPLIES that matrix with the given matrix(the first argument).
+	//For example if Rotation matrix is R and given matrix is M the output is: M' = M * R; 
+	transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	transformation = glm::scale(transformation, glm::vec3(0.5f, 0.5f, 0.5f));
+
+	GLuint loc = glGetUniformLocation(shader1.getID(), "transformation");
+	//glm::value_ptr returns a reference to the first element of the matrix.
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(transformation));
+
 
 	//The Render Loop
 	while (!glfwWindowShouldClose(window))

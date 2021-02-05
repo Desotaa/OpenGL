@@ -63,26 +63,72 @@ int main()
 	//Register our size callback funtion to GLFW.
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	glEnable(GL_DEPTH_TEST);
+
 	Shader shader1("Shaders/Container/texvertex.vert", "Shaders/Container/texfrag.frag");
 
 
 
 	//INIT THE RENDERING DATA
-	//Triangle vertices
+	//Cube vertices
 	GLfloat vertices[] = {
-		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
-	GLuint indices[] =
+	//Translation vectors for all the cubes
+	glm::vec3 cubePositions[] = 
 	{
-		0, 3, 1,
-		2, 1, 3
+	glm::vec3(0.0f,  0.0f,  0.0f),
+	glm::vec3(2.0f,  5.0f, -15.0f),
+	glm::vec3(-1.5f, -2.2f, -2.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -0.4f, -3.5f),
+	glm::vec3(-1.7f,  3.0f, -7.5f),
+	glm::vec3(1.3f, -2.0f, -2.5f),
+	glm::vec3(1.5f,  2.0f, -2.5f),
+	glm::vec3(1.5f,  0.2f, -1.5f),
+	glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
-
 
 	//Generate the VAO and Bind it
 	GLuint VAO;
@@ -102,23 +148,21 @@ int main()
 	//Specify the data of the VBO.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Generate the EBO. Note that A VAO stores the glBindBuffer calls when the target is GL_ELEMENT_ARRAY_BUFFER.
-	//Meaning that you can store EBO inside the currently bound VAO.
-	GLuint EBO;
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	////Generate the EBO. Note that A VAO stores the glBindBuffer calls when the target is GL_ELEMENT_ARRAY_BUFFER.
+	////Meaning that you can store EBO inside the currently bound VAO.
+	//GLuint EBO;
+	//glGenBuffers(1, &EBO);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
 	//Specify the vertex attributes of the currently bound VBO
 	//Position Attribute
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	//Color Attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+	//Texture Attribute
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	//Unbound the VAO, since we stored all the attributes inside it. Whenever we want to render that object we are going to rebind it.
 	glBindVertexArray(0);
 
@@ -184,17 +228,20 @@ int main()
 	shader1.setInt("texture1", 0);
 	shader1.setInt("texture2", 1);
 
-	//Transformation
-	glm::mat4 transformation = glm::mat4(1.0f);
-	//glm::rotate translate, and scale creates the corresponding matrix with required parameters and
-	//POST MULTIPLIES that matrix with the given matrix(the first argument).
-	//For example if Rotation matrix is R and given matrix is M the output is: M' = M * R; 
-	transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	transformation = glm::scale(transformation, glm::vec3(0.5f, 0.5f, 0.5f));
-
-	GLuint loc = glGetUniformLocation(shader1.getID(), "transformation");
-	//glm::value_ptr returns a reference to the first element of the matrix.
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(transformation));
+	//Transformation matrices
+	//glm::mat4 model = glm::mat4(1.0f);
+	//model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 view = glm::mat4(1.0f);
+	//To move camera backward, move entires scene forward. (Apply inverse transformation)
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
+	glm::mat4 projection;
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.0f);
+	//GOING TO SET MODEL MATRIX IN THE RENDER LOOP SINCE IT WILL CHANGE CONSTANTLY
+	//glm::mat4 PVM = projection * view * model;
+	//at the end local coordinates will end up in clip space, as OpenGL (gl_position) expects, since it
+	//automatically performs clipping, and perspective projection at the end of the vertex shader stage (while moving onto NDC)
+	//Send it to the shader (note that shader is activated at the top)
+	//shader1.setMat4("PVM", PVM);
 
 
 	//The Render Loop
@@ -205,9 +252,10 @@ int main()
 		
 		//Rendering commands here
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Before rendering bind the shader program, and VAO.
 		shader1.use();
+		
 		//Note that we dont need to bind VBO since VAO stores attribute pointer which points to the corresponding VBO's data
 		//VAO also stores the EBO corresponding to the object to be drawn.
 		glBindVertexArray(VAO);
@@ -216,7 +264,19 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+		for (int i = 0; i < 10; ++i)
+		{
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
+			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), cubePositions[9-i]);
+			glm::mat4 PVM = projection * view * model;
+			shader1.setMat4("PVM", PVM);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
+
 		glBindVertexArray(0);
 
 		//Before moving on to the next rendering iteration, swap the buffers, and poll the events.

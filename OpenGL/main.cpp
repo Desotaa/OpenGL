@@ -1,7 +1,6 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Shader.h"
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>
@@ -10,9 +9,23 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-static constexpr unsigned int SCR_WIDTH = 800;
-static constexpr unsigned int SCR_HEIGHT = 600;
+//My headers
+#include "Utilities.h"
+#include "Shader.h"
+#include "Camera.h"
 
+
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+//Deltatime as global because I got linker errors.
+double deltaTime = 0.0;
+double lastFrame = 0.0;
+
+void updateDeltaTime()
+{
+	double currentFrame = glfwGetTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+}
 
 //Callback function in case of resizing the window
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -28,6 +41,23 @@ void processInput(GLFWwindow* window)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
+
+	//Camera movement
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.processKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.processKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.processKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.processKeyboard(RIGHT, deltaTime);
+
+}
+
+//Callback function for mouse position inputs
+void mouse_callback(GLFWwindow* window, double xPos, double yPos)
+{
+	camera.processMouseMovement(xPos, yPos, GL_TRUE);
 }
 
 int main()
@@ -62,6 +92,10 @@ int main()
 
 	//Register our size callback funtion to GLFW.
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
+
+	//GLFW will capture the mouse and will hide the cursor
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -209,10 +243,10 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	//Read the data
-	data = stbi_load("Resources/Textures/awesomeface.png", &width, &height, &nrChannels, 0);
+	data = stbi_load("Resources/Textures/fma.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
@@ -228,21 +262,11 @@ int main()
 	shader1.setInt("texture1", 0);
 	shader1.setInt("texture2", 1);
 
-	//Transformation matrices
-	//glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 view = glm::mat4(1.0f);
-	//To move camera backward, move entires scene forward. (Apply inverse transformation)
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.0f);
-	//GOING TO SET MODEL MATRIX IN THE RENDER LOOP SINCE IT WILL CHANGE CONSTANTLY
-	//glm::mat4 PVM = projection * view * model;
-	//at the end local coordinates will end up in clip space, as OpenGL (gl_position) expects, since it
-	//automatically performs clipping, and perspective projection at the end of the vertex shader stage (while moving onto NDC)
-	//Send it to the shader (note that shader is activated at the top)
-	//shader1.setMat4("PVM", PVM);
 
+	//Projection Matrix
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
+
+	glfwSetCursorPos(window, SCR_WIDTH/2, SCR_HEIGHT / 2);
 
 	//The Render Loop
 	while (!glfwWindowShouldClose(window))
@@ -250,6 +274,9 @@ int main()
 		//First check the inputs
 		processInput(window);
 		
+		//Update deltaTime
+		updateDeltaTime();
+
 		//Rendering commands here
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -265,6 +292,7 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
+		glm::mat4 view = camera.getViewMatrix();
 
 		for (int i = 0; i < 10; ++i)
 		{

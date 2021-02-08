@@ -152,6 +152,8 @@
   <ItemGroup>
     <None Include="Shaders\Container\texfrag.frag" />
     <None Include="Shaders\Container\texvertex.vert" />
+    <None Include="Shaders\LightCube\lightCube.frag" />
+    <None Include="Shaders\LightCube\lightCube.vert" />
     <None Include="Shaders\simp_triangle\fragment.frag" />
     <None Include="Shaders\simp_triangle\vertex.vert" />
   </ItemGroup>

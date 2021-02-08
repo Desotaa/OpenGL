@@ -60,6 +60,11 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos)
 	camera.processMouseMovement(xPos, yPos, GL_TRUE);
 }
 
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+	camera.processMouseScroll(yOffset);
+}
+
 int main()
 {
 	glfwInit();
@@ -70,7 +75,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Create the window object
-	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Window", NULL, NULL);
 	if (window == nullptr)
 	{
 		std::cout << "Failed to create the window" << std::endl;
@@ -93,6 +98,7 @@ int main()
 	//Register our size callback funtion to GLFW.
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	//GLFW will capture the mouse and will hide the cursor
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -100,7 +106,8 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	Shader shader1("Shaders/Container/texvertex.vert", "Shaders/Container/texfrag.frag");
-
+	Shader lightCubeShader("Shaders/LightCube/lightCube.vert", "Shaders/LightCube/lightCube.frag");
+	
 
 
 	//INIT THE RENDERING DATA
@@ -164,6 +171,7 @@ int main()
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	//Cube Object 
 	//Generate the VAO and Bind it
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
@@ -262,11 +270,20 @@ int main()
 	shader1.setInt("texture1", 0);
 	shader1.setInt("texture2", 1);
 
+	//Light Cube 
+	GLuint lightCubeVAO;
+	glGenVertexArrays(1, &lightCubeVAO);
+	glBindVertexArray(lightCubeVAO);
+	
+	//No need to create a new VBO since light cube will use the cube data as vertex data. Only attributes will differ.
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, 0, 5 * sizeof(GLfloat), (void*)0);
+	glm::mat4 lightCubeModelMat = glm::mat4(1.0f);
+	lightCubeModelMat = glm::translate(lightCubeModelMat, glm::vec3(1.0f, 1.0f, -1.0f));
 
-	//Projection Matrix
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
-
-	glfwSetCursorPos(window, SCR_WIDTH/2, SCR_HEIGHT / 2);
+	
+	glfwSetCursorPos(window, SCR_WIDTH / 2, SCR_HEIGHT / 2);
 
 	//The Render Loop
 	while (!glfwWindowShouldClose(window))
@@ -282,7 +299,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Before rendering bind the shader program, and VAO.
 		shader1.use();
-		
+
+
 		//Note that we dont need to bind VBO since VAO stores attribute pointer which points to the corresponding VBO's data
 		//VAO also stores the EBO corresponding to the object to be drawn.
 		glBindVertexArray(VAO);
@@ -293,6 +311,10 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		glm::mat4 view = camera.getViewMatrix();
+
+		//Projection Matrix
+		glm::mat4 projection = glm::perspective(glm::radians(camera.getFov()), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
+
 
 		for (int i = 0; i < 10; ++i)
 		{
@@ -306,6 +328,13 @@ int main()
 
 
 		glBindVertexArray(0);
+		
+		//Render the light
+		lightCubeShader.use();
+		glBindVertexArray(lightCubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		lightCubeShader.setMat4("PVM", projection * view * lightCubeModelMat);
+
 
 		//Before moving on to the next rendering iteration, swap the buffers, and poll the events.
 		glfwSwapBuffers(window);

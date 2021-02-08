@@ -5,7 +5,7 @@ Camera::Camera(glm::vec3 pos, glm::vec3 wUp, float yaw_in, float pitch_in)
 	front(glm::vec3(0.0f, 0.0f, -1.0f)),
 	movementSpeed(SPEED),
 	mouseSensivity(SENSIVITY),
-	zoom(ZOOM),
+	fov(FOV),
 	lastX(SCR_WIDTH / 2), 
 	lastY(SCR_HEIGHT / 2)
 {
@@ -21,7 +21,7 @@ Camera::Camera(float posX, float posY, float posZ, float wUpX, float wUpY, float
 	front(glm::vec3(0.0f, 0.0f, -1.0f)),
 	movementSpeed(SPEED),
 	mouseSensivity(SENSIVITY),
-	zoom(ZOOM)
+	fov(FOV)
 {
 	position = glm::vec3(posX, posY, posZ);
 	worldUp = glm::vec3(wUpX, wUpY, wUpZ);
@@ -35,6 +35,11 @@ glm::mat4 Camera::getViewMatrix() const
 	return glm::lookAt(position, position + front, worldUp);
 }
 
+float Camera::getFov() const
+{
+	return fov;
+}
+
 void Camera::setSpeed(float speed_in)
 {
 	movementSpeed = speed_in;
@@ -45,9 +50,9 @@ void Camera::setSensivity(float sensivity_in)
 	mouseSensivity = sensivity_in;
 }
 
-void Camera::setZoom(float zoom_in)
+void Camera::setZoom(float fov_in)
 {
-	zoom = zoom_in;
+	fov = fov_in;
 }
 
 void Camera::processKeyboard(Camera_Movement direction, double deltaTime)
@@ -97,6 +102,15 @@ void Camera::processMouseMovement(double xPos, double yPos, GLboolean constrainP
 	//Calculated the angles update the basis
 	updateCameraVectors();
 
+}
+
+void Camera::processMouseScroll(float yOffset)
+{
+	fov -= yOffset;
+	if (fov < 1.0f)
+		fov = 0.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
 }
 
 

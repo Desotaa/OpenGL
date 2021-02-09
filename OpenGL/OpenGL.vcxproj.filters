@@ -27,6 +27,9 @@
     <Filter Include="Shaders\LightCube">
       <UniqueIdentifier>{19181606-a13b-4bc1-a001-773dc9dee20c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\ColoredCube">
+      <UniqueIdentifier>{33a2a224-8ca4-4fb1-99e9-2266f4c95af5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,6 +77,12 @@
     </None>
     <None Include="Shaders\LightCube\lightCube.vert">
       <Filter>Shaders\LightCube</Filter>
+    </None>
+    <None Include="Shaders\ColoredCube\coloredCube.vert">
+      <Filter>Shaders\ColoredCube</Filter>
+    </None>
+    <None Include="Shaders\ColoredCube\coloredCube.frag">
+      <Filter>Shaders\ColoredCube</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

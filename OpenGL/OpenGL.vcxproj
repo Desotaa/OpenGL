@@ -150,6 +150,8 @@
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\ColoredCube\coloredCube.frag" />
+    <None Include="Shaders\ColoredCube\coloredCube.vert" />
     <None Include="Shaders\Container\texfrag.frag" />
     <None Include="Shaders\Container\texvertex.vert" />
     <None Include="Shaders\LightCube\lightCube.frag" />

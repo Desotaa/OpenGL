@@ -23,7 +23,7 @@ enum Camera_Movement
 constexpr float YAW = 90.0f;
 constexpr float PITCH = 0.0f;
 constexpr float SPEED = 5.0f;
-constexpr float SENSIVITY = 0.1f;
+constexpr float SENSIVITY = 0.05f;
 constexpr float FOV = 45.0f; 
 
 class Camera
@@ -31,9 +31,12 @@ class Camera
 public:
 	Camera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 wUp = glm::vec3(0.0f, 1.0f, 0.0f), float yaw_in = YAW, float pitch_in = PITCH);
 	Camera(float posX, float posY, float posZ, float wUpX, float wUpY, float wUpZ, float yaw_in, float pitch_in);
+	
+	//Getters
 	//Will be used to pass the view matrix to the shaders
 	glm::mat4 getViewMatrix() const;
 	float getFov() const;
+	glm::vec3 getPosition() const;
 
 
 	//Setters

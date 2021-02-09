@@ -277,9 +277,14 @@ int main()
 	shader1.use();
 	//shader1.setInt("texture1", 0);
 	//shader1.setInt("texture2", 1);
-	shader1.setVec3("objectColor", glm::vec3(0.8f, 0.5f, 0.6f));
-	shader1.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	shader1.setVec3("lightPos", lightPos);
+	shader1.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+	shader1.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+	shader1.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+	shader1.setFloat("material.shininess", 32.0f);
+	shader1.setVec3("light.position", lightPos);
+	shader1.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	shader1.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+	shader1.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
 
 	//Light Cube 
@@ -328,12 +333,11 @@ int main()
 		glm::mat4 projection = glm::perspective(glm::radians(camera.getFov()), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
 
 
-		for (int i = 0; i < 1; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
 			//model = glm::rotate(model, (float)glfwGetTime(), cubePositions[9-i]);
-			model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
 			glm::mat4 PVM = projection * view * model;
 			shader1.setMat4("PVM", PVM);
 			shader1.setMat4("model", model);
@@ -347,9 +351,10 @@ int main()
 		
 		//Render the light
 		lightCubeShader.use();
+		lightCubeShader.setMat4("PVM", projection * view * lightCubeModelMat);
 		glBindVertexArray(lightCubeVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		lightCubeShader.setMat4("PVM", projection * view * lightCubeModelMat);
+
 
 
 		//Before moving on to the next rendering iteration, swap the buffers, and poll the events.

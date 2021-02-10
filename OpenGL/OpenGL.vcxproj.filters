@@ -30,6 +30,9 @@
     <Filter Include="Shaders\ColoredCube">
       <UniqueIdentifier>{33a2a224-8ca4-4fb1-99e9-2266f4c95af5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\LightingMaps">
+      <UniqueIdentifier>{9d70f9a5-5f29-45b1-a2ca-06bd9494530e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,6 +87,12 @@
     <None Include="Shaders\ColoredCube\coloredCube.frag">
       <Filter>Shaders\ColoredCube</Filter>
     </None>
+    <None Include="Shaders\LightingMaps\lightingMaps.frag">
+      <Filter>Shaders\LightingMaps</Filter>
+    </None>
+    <None Include="Shaders\LightingMaps\lightingMaps.vert">
+      <Filter>Shaders\LightingMaps</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\awesomeface.png">
@@ -93,6 +102,15 @@
       <Filter>Resources\Textures</Filter>
     </Image>
     <Image Include="Resources\Textures\wall.jpg">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\container2.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\fma.jpg">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\container2_specular.png">
       <Filter>Resources\Textures</Filter>
     </Image>
   </ItemGroup>

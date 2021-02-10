@@ -156,12 +156,17 @@
     <None Include="Shaders\Container\texvertex.vert" />
     <None Include="Shaders\LightCube\lightCube.frag" />
     <None Include="Shaders\LightCube\lightCube.vert" />
+    <None Include="Shaders\LightingMaps\lightingMaps.frag" />
+    <None Include="Shaders\LightingMaps\lightingMaps.vert" />
     <None Include="Shaders\simp_triangle\fragment.frag" />
     <None Include="Shaders\simp_triangle\vertex.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\awesomeface.png" />
     <Image Include="Resources\Textures\container.jpg" />
+    <Image Include="Resources\Textures\container2.png" />
+    <Image Include="Resources\Textures\container2_specular.png" />
+    <Image Include="Resources\Textures\fma.jpg" />
     <Image Include="Resources\Textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

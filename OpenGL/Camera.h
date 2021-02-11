@@ -37,7 +37,7 @@ public:
 	glm::mat4 getViewMatrix() const;
 	float getFov() const;
 	glm::vec3 getPosition() const;
-
+	glm::vec3 getFront() const;
 
 	//Setters
 	void setSpeed(float speed_in);

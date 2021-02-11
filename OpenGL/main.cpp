@@ -17,7 +17,7 @@
 #include "Camera.h"
 
 //Light
-glm::vec3 lightPos(1.0f, 5.0f, 1.0f); //Position in world space
+glm::vec3 lightPos(1.0f, 1.0f, 1.0f); //Position in world space
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 //Deltatime as global because I got linker errors.
@@ -218,6 +218,14 @@ int main()
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	glm::vec3 pointLightPositions[] = 
+	{
+		glm::vec3(0.7f,  0.2f,  2.0f),
+		glm::vec3(2.3f, -3.3f, -4.0f),
+		glm::vec3(-4.0f,  2.0f, -12.0f),
+		glm::vec3(0.0f,  0.0f, -3.0f)
+	};
+
 	//Cube Object 
 	//Generate the VAO and Bind it
 	GLuint VAO;
@@ -260,10 +268,34 @@ int main()
 	shader1.setInt("material.diffuse", 0);
 	shader1.setInt("material.specular", 1);
 	shader1.setFloat("material.shininess", 32.0f);
-	shader1.setVec3("light.position", lightPos);
-	shader1.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-	shader1.setVec3("light.diffuse", 0.7f, 0.7f, 0.7f);
-	shader1.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//Diffuse Uniforms
+	shader1.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+	shader1.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+	shader1.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+	shader1.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+	//Point Light Uniforms
+	for (int i = 0; i < 4; ++i)
+	{
+		std::string num = std::to_string(i);
+		shader1.setVec3("pointLights[" + num + "].position", pointLightPositions[i]);
+		shader1.setVec3("pointLights[" + num + "].ambient", 0.05f, 0.05f, 0.05f);
+		shader1.setVec3("pointLights[" + num + "].diffuse", 0.8f, 0.8f, 0.8f);
+		shader1.setVec3("pointLights[" + num + "].specular", 1.0f, 1.0f, 1.0f);
+		shader1.setFloat("pointLights[" + num + "].constant", 1.0f);
+		shader1.setFloat("pointLights[" + num + "].linear", 0.09f);
+		shader1.setFloat("pointLights[" + num + "].quadratic", 0.032f);
+	}
+	//Spotlight uniform
+	shader1.setVec3("spotLight.position", camera.getPosition());
+	shader1.setVec3("spotLight.direction", camera.getFront());
+	shader1.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+	shader1.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+	shader1.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+	shader1.setFloat("spotLight.constant", 1.0f);
+	shader1.setFloat("spotLight.linear", 0.09);
+	shader1.setFloat("spotLight.quadratic", 0.032);
+	shader1.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+	shader1.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
 
 	//Light Cube 
@@ -283,14 +315,15 @@ int main()
 	//The Render Loop
 	while (!glfwWindowShouldClose(window))
 	{
-		//First check the inputs
-		processInput(window);
-		
 		//Update deltaTime
 		updateDeltaTime();
 
+		//First check the inputs
+		processInput(window);
+	
+
 		//Rendering commands here
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Before rendering bind the shader program, and VAO.
 		shader1.use();
@@ -321,20 +354,26 @@ int main()
 			shader1.setMat4("model", model);
 			shader1.setMat3("normalTransformation", glm::transpose(glm::inverse(glm::mat3(model))));
 			shader1.setVec3("cameraPos", camera.getPosition());
+			//Update camerapos and dir for spotlight
+			shader1.setVec3("spotLight.position", camera.getPosition());
+			shader1.setVec3("spotLight.direction", camera.getFront());
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
 
 		glBindVertexArray(0);
 		
-		//Render the light
-		lightCubeShader.use();
-		glm::mat4 lightCubeModelMat = glm::mat4(1.0f);
-		lightCubeModelMat = glm::translate(lightCubeModelMat, lightPos);
-		lightCubeModelMat = glm::scale(lightCubeModelMat, glm::vec3(0.2f));
-		lightCubeShader.setMat4("PVM", projection * view * lightCubeModelMat);
-		glBindVertexArray(lightCubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//Render the point lights
+		for (int i = 0; i < 4; ++i)
+		{
+			lightCubeShader.use();
+			glm::mat4 lightCubeModelMat = glm::mat4(1.0f);
+			lightCubeModelMat = glm::translate(lightCubeModelMat, pointLightPositions[i]);
+			lightCubeModelMat = glm::scale(lightCubeModelMat, glm::vec3(0.2f));
+			lightCubeShader.setMat4("PVM", projection * view * lightCubeModelMat);
+			glBindVertexArray(lightCubeVAO);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 
 

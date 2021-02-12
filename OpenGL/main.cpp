@@ -5,6 +5,7 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>
 
+
 //TODO Main function is too ugly. Need to encapsulate textures and models later.
 
 
@@ -232,7 +233,6 @@ int main()
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	
-
 	//Generate the VBO
 	GLuint VBO;
 	glGenBuffers(1, &VBO);

@@ -33,6 +33,9 @@
     <Filter Include="Shaders\LightingMaps">
       <UniqueIdentifier>{9d70f9a5-5f29-45b1-a2ca-06bd9494530e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Backpack">
+      <UniqueIdentifier>{0509f00f-e899-4039-aa62-3963567a7ac3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +50,12 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -59,6 +68,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,6 +107,12 @@
     </None>
     <None Include="Shaders\LightingMaps\lightingMaps.vert">
       <Filter>Shaders\LightingMaps</Filter>
+    </None>
+    <None Include="Shaders\backpack\backpack.vert">
+      <Filter>Shaders\Backpack</Filter>
+    </None>
+    <None Include="Shaders\backpack\backpack.frag">
+      <Filter>Shaders\Backpack</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

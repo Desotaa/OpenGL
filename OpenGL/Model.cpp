@@ -10,7 +10,7 @@ Model::Model(const char * path)
 	loadModel(path);
 }
 
-void Model::draw(Shader & shader)
+void Model::draw(Shader & shader) const
 {
 	for (int i = 0; i < meshes.size(); ++i)
 	{
@@ -105,7 +105,9 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		}
 	}
 
-	//Materials
+	//A mesh can only contain 1 material in assimp if there are more than 1 materials, Assimp
+	//divides mesh into submeshes and stores in the same node.
+	//Material. 
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
@@ -124,7 +126,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * material, aiTextur
 	for (unsigned int i = 0; i < material->GetTextureCount(type); ++i)
 	{
 		aiString str;
-		material->GetTexture(type, i, &str);
+		material->GetTexture(type, i, &str);//Material stores the texture filenames
 		if (loaded_textures.count(str.C_Str()) == 0) //Texture has not been loaded before
 		{
 			Texture texture;

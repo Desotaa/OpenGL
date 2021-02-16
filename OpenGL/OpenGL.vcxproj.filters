@@ -36,6 +36,9 @@
     <Filter Include="Shaders\Backpack">
       <UniqueIdentifier>{0509f00f-e899-4039-aa62-3963567a7ac3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Stencil">
+      <UniqueIdentifier>{c66c0043-58f4-4ded-beb5-d6dffba56923}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -113,6 +116,15 @@
     </None>
     <None Include="Shaders\backpack\backpack.frag">
       <Filter>Shaders\Backpack</Filter>
+    </None>
+    <None Include="Shaders\Stencil\stencil_testing.frag">
+      <Filter>Shaders\Stencil</Filter>
+    </None>
+    <None Include="Shaders\Stencil\stencil_testing.vert">
+      <Filter>Shaders\Stencil</Filter>
+    </None>
+    <None Include="Shaders\Stencil\border.frag">
+      <Filter>Shaders\Stencil</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

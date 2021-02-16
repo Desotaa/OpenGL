@@ -83,10 +83,10 @@ void Camera::processMouseMovement(double xPos, double yPos, GLboolean constrainP
 {
 	//Calculate the offset from given mouse positions.
 	double xOffset = xPos - lastX;
-	//Note that in screen space origin is at the top
+	//GLFW returns mouse coordinates relative to top-left corner of the screen
 	//X increases in right direction
 	//Y increases in bottom direction
-	double yOffset = lastY - yPos; //We need to subtract in reverse order since y coordinates ranges in reverse order we want
+	double yOffset = lastY - yPos; //We need to subtract in reverse order since y coordinates ranges in reverse order we want 
 	lastX = xPos;
 	lastY = yPos;
 

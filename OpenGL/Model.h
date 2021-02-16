@@ -27,17 +27,17 @@ class Model
 public:
 	Model(const char *path);
 
-	void draw(Shader &shader);
+	void draw(Shader &shader) const;
 private:
+	void loadModel(std::string path);
+	void processNode(aiNode *node, const aiScene *scene);
+	Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+	std::vector<Texture> loadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string &typeName);
+
 	//Model data
 	std::vector<Mesh> meshes;
 	//The directory where the model file lies
 	std::string directory;
 	std::unordered_map<std::string, bool> loaded_textures;
-
-	void loadModel(std::string path);
-	void processNode(aiNode *node, const aiScene *scene);
-	Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-	std::vector<Texture> loadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string &typeName);
 };
 #endif

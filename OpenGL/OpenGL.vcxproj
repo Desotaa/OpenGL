@@ -166,6 +166,9 @@
     <None Include="Shaders\LightingMaps\lightingMaps.vert" />
     <None Include="Shaders\simp_triangle\fragment.frag" />
     <None Include="Shaders\simp_triangle\vertex.vert" />
+    <None Include="Shaders\Stencil\border.frag" />
+    <None Include="Shaders\Stencil\stencil_testing.frag" />
+    <None Include="Shaders\Stencil\stencil_testing.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\awesomeface.png" />

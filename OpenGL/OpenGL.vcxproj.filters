@@ -39,6 +39,9 @@
     <Filter Include="Shaders\Stencil">
       <UniqueIdentifier>{c66c0043-58f4-4ded-beb5-d6dffba56923}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Blending">
+      <UniqueIdentifier>{d5abbcee-826d-4e22-9753-a8c482a95631}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -125,6 +128,12 @@
     </None>
     <None Include="Shaders\Stencil\border.frag">
       <Filter>Shaders\Stencil</Filter>
+    </None>
+    <None Include="Shaders\Blending\blend.frag">
+      <Filter>Shaders\Blending</Filter>
+    </None>
+    <None Include="Shaders\Blending\blend.vert">
+      <Filter>Shaders\Blending</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

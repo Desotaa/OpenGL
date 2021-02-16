@@ -156,6 +156,8 @@
   <ItemGroup>
     <None Include="Shaders\backpack\backpack.frag" />
     <None Include="Shaders\backpack\backpack.vert" />
+    <None Include="Shaders\Blending\blend.frag" />
+    <None Include="Shaders\Blending\blend.vert" />
     <None Include="Shaders\ColoredCube\coloredCube.frag" />
     <None Include="Shaders\ColoredCube\coloredCube.vert" />
     <None Include="Shaders\Container\texfrag.frag" />

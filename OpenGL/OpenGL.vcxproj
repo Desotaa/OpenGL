@@ -162,6 +162,10 @@
     <None Include="Shaders\ColoredCube\coloredCube.vert" />
     <None Include="Shaders\Container\texfrag.frag" />
     <None Include="Shaders\Container\texvertex.vert" />
+    <None Include="Shaders\Framebuffer\framebuffer.frag" />
+    <None Include="Shaders\Framebuffer\framebuffer.vert" />
+    <None Include="Shaders\Framebuffer\framebuffer_screen.frag" />
+    <None Include="Shaders\Framebuffer\framebuffer_screen.vert" />
     <None Include="Shaders\LightCube\lightCube.frag" />
     <None Include="Shaders\LightCube\lightCube.vert" />
     <None Include="Shaders\LightingMaps\lightingMaps.frag" />

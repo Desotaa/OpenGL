@@ -20,7 +20,7 @@
 #include <unordered_map>
 #include <vector>
 
-GLuint textureFromFile(const char *filename, const std::string& directory);
+GLuint textureFromFile(const char *filename, const std::string& directory, bool verticalFlip);
 
 class Model
 {

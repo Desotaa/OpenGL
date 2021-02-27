@@ -130,7 +130,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * material, aiTextur
 		if (loaded_textures.count(str.C_Str()) == 0) //Texture has not been loaded before
 		{
 			Texture texture;
-			texture.id = textureFromFile(str.C_Str(), directory);
+			texture.id = textureFromFile(str.C_Str(), directory, true);
 			texture.type = typeName;
 			loaded_textures[str.C_Str()] = true;
 			textures.push_back(texture);
@@ -140,7 +140,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * material, aiTextur
 	return textures;
 }
 
-GLuint textureFromFile(const char * filename, const std::string & directory)
+GLuint textureFromFile(const char * filename, const std::string & directory, bool verticalFlip)
 {
 	std::string path = directory + "/" + std::string(filename);
 
@@ -149,7 +149,7 @@ GLuint textureFromFile(const char * filename, const std::string & directory)
 	glGenTextures(1, &textureId);
 
 	//Load the data from the file
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(verticalFlip);
 	int width, height, nrComponents;
 	unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
 	if (data)

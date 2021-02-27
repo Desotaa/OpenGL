@@ -45,6 +45,12 @@
     <Filter Include="Shaders\Framebuffer">
       <UniqueIdentifier>{a31447d7-e94e-4332-bc5d-157055c57aa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Cubemaps">
+      <UniqueIdentifier>{e41363db-a263-4f5e-a5ce-b1ac86f30d48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Skybox">
+      <UniqueIdentifier>{48590663-47be-4820-8820-49fd396a5f98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -149,6 +155,18 @@
     </None>
     <None Include="Shaders\Framebuffer\framebuffer_screen.vert">
       <Filter>Shaders\Framebuffer</Filter>
+    </None>
+    <None Include="Shaders\Cubemaps\cubemap.vert">
+      <Filter>Shaders\Cubemaps</Filter>
+    </None>
+    <None Include="Shaders\Cubemaps\cubemap.frag">
+      <Filter>Shaders\Cubemaps</Filter>
+    </None>
+    <None Include="Shaders\Skybox\skybox.vert">
+      <Filter>Shaders\Skybox</Filter>
+    </None>
+    <None Include="Shaders\Skybox\skybox.frag">
+      <Filter>Shaders\Skybox</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

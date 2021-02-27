@@ -162,6 +162,8 @@
     <None Include="Shaders\ColoredCube\coloredCube.vert" />
     <None Include="Shaders\Container\texfrag.frag" />
     <None Include="Shaders\Container\texvertex.vert" />
+    <None Include="Shaders\Cubemaps\cubemap.frag" />
+    <None Include="Shaders\Cubemaps\cubemap.vert" />
     <None Include="Shaders\Framebuffer\framebuffer.frag" />
     <None Include="Shaders\Framebuffer\framebuffer.vert" />
     <None Include="Shaders\Framebuffer\framebuffer_screen.frag" />
@@ -172,6 +174,8 @@
     <None Include="Shaders\LightingMaps\lightingMaps.vert" />
     <None Include="Shaders\simp_triangle\fragment.frag" />
     <None Include="Shaders\simp_triangle\vertex.vert" />
+    <None Include="Shaders\Skybox\skybox.frag" />
+    <None Include="Shaders\Skybox\skybox.vert" />
     <None Include="Shaders\Stencil\border.frag" />
     <None Include="Shaders\Stencil\stencil_testing.frag" />
     <None Include="Shaders\Stencil\stencil_testing.vert" />

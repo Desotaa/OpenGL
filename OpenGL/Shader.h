@@ -18,7 +18,7 @@ class Shader
 {
 public:
 	// constructor reads and builds the shader
-	Shader(const char* vertexPath, const char* fragmentPath);
+	Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 	// use/activate the shader
 	void use();
 	// utility uniform functions. Note that to call these functions, first you have to activate the shader program
@@ -33,12 +33,12 @@ public:
 	void setVec4(const std::string& name, float x, float y, float z, float w) const;
 	void setMat3(const std::string& name, const glm::mat3& matrix) const;
 	void setMat4(const std::string& name, const glm::mat4& matrix) const;
-	unsigned int getID() const;
+	GLuint getID() const;
 private:
-	void checkCompileErrors(unsigned int shader, std::string type) const;
+	void checkCompileErrors(GLuint shader, std::string type) const;
 private:
 	// the program ID
-	unsigned int ID;
+	GLuint ID;
 
 };
 

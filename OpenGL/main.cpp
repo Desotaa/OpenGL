@@ -149,148 +149,37 @@ int main()
 
 	//Configure Global OpenGL State
 	glEnable(GL_DEPTH_TEST);
+	
 
+	//Create Shader Objects
+	Shader backpackShader("Shaders/backpack/backpack.vert", "Shaders/backpack/backpack.frag");
+	Shader normalVisualizerShader("Shaders/normal_visualizer/normal_visualizer.vert", "Shaders/normal_visualizer/normal_visualizer.frag", "Shaders/normal_visualizer/normal_visualizer.geom");
 
-	//Shader backpackShader("Shaders/backpack/backpack.vert", "Shaders/backpack/backpack.frag");
-	//Model backpack("Resources/Models/backpack/backpack.obj");
-
-
-	Shader containerShader("Shaders/Cubemaps/cubemap.vert", "Shaders/Cubemaps/cubemap.frag");
-	Shader skyboxShader("Shaders/Skybox/skybox.vert", "Shaders/Skybox/skybox.frag");
+	Model backpack("Resources/Models/backpack/backpack.obj");
 
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
-		// ------------------------------------------------------------------
-	GLfloat cubeVertices[] =
+// ------------------------------------------------------------------
+	GLfloat points[] = 
 	{
-		// positions          // normals
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // top-left
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top-right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // bottom-right
+		-0.5f, -0.5f, 1.0f, 1.0f, 0.0f  // bottom-left
 	};
-	GLfloat skyboxVertices[] = 
-	{
-		// positions          
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f
-	};
-
-	// cube VAO
-	GLuint cubeVAO, cubeVBO;
-	glGenVertexArrays(1, &cubeVAO);
-	glGenBuffers(1, &cubeVBO);
-	glBindVertexArray(cubeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+	GLuint VBO, VAO;
+	glGenBuffers(1, &VBO);
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-	// skybox VAO
-	GLuint  skyboxVAO, skyboxVBO;
-	glGenVertexArrays(1, &skyboxVAO);
-	glGenBuffers(1, &skyboxVBO);
-	glBindVertexArray(skyboxVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+	glBindVertexArray(0);
 
 
-	std::vector<std::string> faces
-	{
-		"Resources/Skyboxes/skybox/right.jpg",
-		"Resources/Skyboxes/skybox/left.jpg",
-		"Resources/Skyboxes/skybox/top.jpg",
-		"Resources/Skyboxes/skybox/bottom.jpg",
-		"Resources/Skyboxes/skybox/front.jpg",
-		"Resources/Skyboxes/skybox/back.jpg"
-	};
-
-	unsigned int cubemapTexture = loadCubemap(faces, false);
-
-	
-	containerShader.use();
-	containerShader.setInt("skybox", 0);
-	skyboxShader.use();
-	skyboxShader.setInt("skybox", 0);
 
 
 
@@ -310,34 +199,21 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Render the objects first
+		////Render the objects first
 		glm::mat4 view = camera.getViewMatrix();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.getFov()), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 PV = projection * view;
-		containerShader.use();
-		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-		containerShader.setMat4("PVM", PV * model);
-		containerShader.setMat4("model", model);
-		containerShader.setMat3("normalTransformation", glm::mat3(glm::transpose(glm::inverse(model))));
-		containerShader.setVec3("cameraPos", camera.getPosition());
 		//Render the container
-		glBindVertexArray(cubeVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
-		//Render the skybox at last
-		glDepthFunc(GL_LEQUAL); //Skybox depth values are 1.0f (max depth value), so they should also pass the test if their depth is equal to 1.0f
-		skyboxShader.use();
-		view = glm::mat4(glm::mat3(view)); //Remove the translation effect of the view matrix
-		skyboxShader.setMat4("PV", projection * view);
-		glBindVertexArray(skyboxVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-		glDepthFunc(GL_LESS);
+		backpackShader.use();
+		backpackShader.setMat4("PVM", PV * model);
+		backpack.draw(backpackShader);
+		//Visualize normals
+		normalVisualizerShader.use();
+		normalVisualizerShader.setMat4("modelView", view * model);
+		normalVisualizerShader.setMat4("projection", projection);
+		backpack.draw(normalVisualizerShader);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

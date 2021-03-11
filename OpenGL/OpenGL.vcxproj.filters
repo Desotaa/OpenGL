@@ -51,6 +51,15 @@
     <Filter Include="Shaders\Skybox">
       <UniqueIdentifier>{48590663-47be-4820-8820-49fd396a5f98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\GS1">
+      <UniqueIdentifier>{16a41ebe-5377-4549-a45d-c56094a975b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Explosion">
+      <UniqueIdentifier>{5acc0918-fbf3-4930-bc2d-3061b9d7c271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\normal_visualizer">
+      <UniqueIdentifier>{1ceaded2-36f2-4d75-871a-76d7fea62fc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +176,33 @@
     </None>
     <None Include="Shaders\Skybox\skybox.frag">
       <Filter>Shaders\Skybox</Filter>
+    </None>
+    <None Include="Shaders\GS1\gs1.geom">
+      <Filter>Shaders\GS1</Filter>
+    </None>
+    <None Include="Shaders\GS1\gs1.vert">
+      <Filter>Shaders\GS1</Filter>
+    </None>
+    <None Include="Shaders\GS1\gs1.frag">
+      <Filter>Shaders\GS1</Filter>
+    </None>
+    <None Include="Shaders\Explosion\explosion.vert">
+      <Filter>Shaders\Explosion</Filter>
+    </None>
+    <None Include="Shaders\Explosion\explosion.frag">
+      <Filter>Shaders\Explosion</Filter>
+    </None>
+    <None Include="Shaders\Explosion\explosion.geom">
+      <Filter>Shaders\Explosion</Filter>
+    </None>
+    <None Include="Shaders\normal_visualizer\normal_visualizer.geom">
+      <Filter>Shaders\normal_visualizer</Filter>
+    </None>
+    <None Include="Shaders\normal_visualizer\normal_visualizer.vert">
+      <Filter>Shaders\normal_visualizer</Filter>
+    </None>
+    <None Include="Shaders\normal_visualizer\normal_visualizer.frag">
+      <Filter>Shaders\normal_visualizer</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
